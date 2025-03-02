@@ -494,8 +494,7 @@ function InitializeSimplyLove()
 	if ThemePrefs.Get("AllowScreenSelectProfile") then
 		PREFSMAN:SetPreference("DefaultLocalProfileIDP1", "")
 		PREFSMAN:SetPreference("DefaultLocalProfileIDP2", "")
-	else
-
+	end
 end
 
 InitializeSimplyLove()
