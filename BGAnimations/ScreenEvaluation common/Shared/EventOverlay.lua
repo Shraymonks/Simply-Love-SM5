@@ -396,8 +396,8 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 		maxPoints = 0
 	end
 
-	local currentPoints = GetITLPointsForSong(maxPoints, score)
-	local previousPoints = itlData["topScorePoints"]
+	local currentPoints = itlData["curTopScorePoints"]
+	local previousPoints = itlData["prevTopScorePoints"]
 	local pointDelta = currentPoints - previousPoints
 
 	local currentRankingPointTotal = itlData["currentRankingPointTotal"]

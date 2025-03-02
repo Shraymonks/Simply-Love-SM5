@@ -116,6 +116,7 @@ ReadItlFile = function(player)
 end
 
 -- EX score is a number like 92.67
+-- NOTE(teejusb): This function is not accurate for ITL 2025.
 GetITLPointsForSong = function(maxPoints, exScore)
 	local thresholdEx = 50.0
 	local percentPoints = 40.0
@@ -247,7 +248,7 @@ local DataForSong = function(player, prevData)
 	local judgments = GetExJudgmentCounts(player)
 	local ex = CalculateExScore(player)
 	local clearType = GetClearType(judgments)
-	local points = GetITLPointsForSong(maxPoints, ex)
+	-- local points = GetITLPointsForSong(maxPoints, ex)
 	local usedCmod = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):CMod() ~= nil
 	local date = ("%04d-%02d-%02d"):format(year, month, day)
 	
@@ -255,7 +256,7 @@ local DataForSong = function(player, prevData)
 		["judgments"] = judgments,
 		["ex"] = ex * 100,
 		["clearType"] = clearType,
-		["points"] = points,
+		-- ["points"] = points,
 		["usedCmod"] = usedCmod,
 		["date"] = date,
 		["noCmod"] = noCmod,
@@ -325,7 +326,7 @@ UpdateItlData = function(player)
 				["judgments"] = DeepCopy(data["judgments"]),
 				["ex"] = data["ex"],
 				["clearType"] = data["clearType"],
-				["points"] = data["points"],
+				-- ["points"] = data["points"],
 				["usedCmod"] = data["usedCmod"],
 				["date"] = data["date"],
 				["maxPoints"] = data["maxPoints"],
@@ -335,7 +336,7 @@ UpdateItlData = function(player)
 		else
 			if data["ex"] >= hashMap[hash]["ex"] then
 				hashMap[hash]["ex"] = data["ex"]
-				hashMap[hash]["points"] = data["points"]
+				-- hashMap[hash]["points"] = data["points"]
 				
 				if data["ex"] > hashMap[hash]["ex"] then
 					-- EX count is strictly better, copy the judgments over.
