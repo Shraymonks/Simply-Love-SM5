@@ -4,7 +4,7 @@ IsItlSong = function(player)
 	local song_dir = song:GetSongDir()
 	local group = string.lower(song:GetGroupName())
 	local pn = ToEnumShortString(player)
-	return string.find(group, "itl online 2024") or string.find(group, "itl 2024") or SL[pn].ITLData["pathMap"][song_dir] ~= nil
+	return string.find(group, "itl online 2025") or string.find(group, "itl 2025") or SL[pn].ITLData["pathMap"][song_dir] ~= nil
 end
 
 
@@ -44,7 +44,7 @@ end
 -- This set up lets us display song wheel grades for ITL both from playing within the
 -- ITL pack and also outside of it.
 -- Note that songs resynced for ITL but played outside of the pack will not be covered in the pathMap.
-local itlFilePath = "itl2024.json"
+local itlFilePath = "itl2025.json"
 
 local TableContainsData = function(t)
 	if t == nil then return false end
@@ -111,71 +111,12 @@ ReadItlFile = function(player)
 		f:destroy()
 		itlData = JsonDecode(existing)
 	end
-	-- SL 5.2.0 had a bug where the EX scores weren't calculated correctly.
-	-- If that's the case, then recalculate the scores the first time the v5.2.1 theme
-	-- is loaded. Use this variable called "fixedEx" to determine if the EX scores
-	-- have been fixed. Luckily we can use the judgment counts, which have all the info,
-	-- in order to calculate the values.
-	--
-	-- Judgment spread has the following keys:
-	--
-	-- "judgments" : {
-	--             "W0" -> the fantasticPlus count
-	--             "W1" -> the fantastic count
-	--             "W2" -> the excellent count
-	--             "W3" -> the great count
-	--             "W4" -> the decent count (may not exist if window is disabled)
-	--             "W5" -> the way off count (may not exist if window is disabled)
-	--           "Miss" -> the miss count
-	--     "totalSteps" -> the total number of steps in the chart (including hold heads)
-	--          "Holds" -> total number of holds held
-	--     "totalHolds" -> total number of holds in the chart
-	--          "Mines" -> total number of mines hit
-	--     "totalMines" -> total number of mines in the chart
-	--          "Rolls" -> total number of rolls held
-	--     "totalRolls" -> total number of rolls in the chart
-	--  },
-	if itlData["fixedEx"] == nil then
-		local hashMap = itlData["hashMap"]
-		local keys = { "W0", "W1", "W2", "W3", "W4", "W5", "Miss" }
-
-		if hashMap ~= nil then
-			for hash, data in pairs(hashMap) do
-				local counts = data["judgments"]
-				local totalSteps = counts["totalSteps"]
-				local totalHolds = counts["totalHolds"]
-				local totalRolls = counts["totalRolls"]
-
-				local total_possible = totalSteps * SL.ExWeights["W0"] + (totalHolds + totalRolls) * SL.ExWeights["Held"]
-				local total_points = 0
-
-				for key in ivalues(keys) do
-					local value = counts[key]
-					if value ~= nil then		
-						total_points = total_points + value * SL.ExWeights[key]
-					end
-				end
-
-				local held = counts["Holds"] + counts["Rolls"]
-				total_points = total_points + held * SL.ExWeights["Held"]
-
-				local letGo = (totalHolds - counts["Holds"]) + (totalRolls - counts["Rolls"])
-				total_points = total_points + letGo * SL.ExWeights["LetGo"]
-
-				local hitMine = counts["Mines"]
-				total_points = total_points + hitMine * SL.ExWeights["HitMine"]
-
-				data["ex"] = math.max(0, math.floor(total_points/total_possible * 10000))
-			end
-		end
-
-		itlData["fixedEx"] = true
-	end
 
 	SL[pn].ITLData = itlData
 end
 
 -- EX score is a number like 92.67
+-- NOTE(teejusb): This function is not accurate for ITL 2025.
 GetITLPointsForSong = function(maxPoints, exScore)
 	local thresholdEx = 50.0
 	local percentPoints = 40.0
@@ -307,7 +248,7 @@ local DataForSong = function(player, prevData)
 	local judgments = GetExJudgmentCounts(player)
 	local ex = CalculateExScore(player)
 	local clearType = GetClearType(judgments)
-	local points = GetITLPointsForSong(maxPoints, ex)
+	-- local points = GetITLPointsForSong(maxPoints, ex)
 	local usedCmod = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):CMod() ~= nil
 	local date = ("%04d-%02d-%02d"):format(year, month, day)
 	
@@ -315,7 +256,7 @@ local DataForSong = function(player, prevData)
 		["judgments"] = judgments,
 		["ex"] = ex * 100,
 		["clearType"] = clearType,
-		["points"] = points,
+		-- ["points"] = points,
 		["usedCmod"] = usedCmod,
 		["date"] = date,
 		["noCmod"] = noCmod,
@@ -385,7 +326,7 @@ UpdateItlData = function(player)
 				["judgments"] = DeepCopy(data["judgments"]),
 				["ex"] = data["ex"],
 				["clearType"] = data["clearType"],
-				["points"] = data["points"],
+				-- ["points"] = data["points"],
 				["usedCmod"] = data["usedCmod"],
 				["date"] = data["date"],
 				["maxPoints"] = data["maxPoints"],
@@ -395,7 +336,7 @@ UpdateItlData = function(player)
 		else
 			if data["ex"] >= hashMap[hash]["ex"] then
 				hashMap[hash]["ex"] = data["ex"]
-				hashMap[hash]["points"] = data["points"]
+				-- hashMap[hash]["points"] = data["points"]
 				
 				if data["ex"] > hashMap[hash]["ex"] then
 					-- EX count is strictly better, copy the judgments over.
