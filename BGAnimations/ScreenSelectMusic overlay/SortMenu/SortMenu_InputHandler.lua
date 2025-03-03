@@ -22,8 +22,21 @@ local input = function(event)
 				MESSAGEMAN:Broadcast('Sort', { order = focus.sort_by })
 				MESSAGEMAN:Broadcast('ResetHeaderText')
 				overlay:queuecommand("DirectInputToEngine")
-
-				-- the player wants to change modes, for example from ITG to FA+
+			elseif focus.kind == "PersonalPlaylist" then
+				local profileDir = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[event.PlayerNumber] + 1])
+				SONGMAN:SetPreferredSongs(profileDir .."Playlists/" .. focus.new_overlay .. ".txt", --[[isAbsolute=]]true);
+				if SONGMAN:GetPreferredSortSongs() then
+					overlay:queuecommand("DirectInputToEngine")
+					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+				end
+			elseif focus.kind == "MachinePlaylist" then
+				local path = THEME:GetPathO("", "Playlists/" .. focus.new_overlay .. ".txt")
+				SONGMAN:SetPreferredSongs(path, --[[isAbsolute=]]true);
+				if SONGMAN:GetPreferredSortSongs() then
+					overlay:queuecommand("DirectInputToEngine")
+					SCREENMAN:GetTopScreen():GetMusicWheel():ChangeSort("SortOrder_Preferred")
+				end
+			-- the player wants to change modes, for example from ITG to FA+
 			elseif focus.kind == "ChangeMode" then
 				SL.Global.GameMode = focus.change
 				for player in ivalues(GAMESTATE:GetHumanPlayers()) do
