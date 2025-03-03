@@ -447,6 +447,7 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 
 	local statImprovements = {}
 	local quests = {}
+	local achievements = {}
 	local progress = itlData["progress"]
 	if progress then
 		if progress["statImprovements"] then
@@ -523,6 +524,43 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 				table.insert(quests, table.concat(questStrings, "\n"))
 			end
 		end
+
+		if progress["achievementsCompleted"] then
+			for achievement in ivalues(progress["achievementsCompleted"]) do
+				local achievementStrings = {}
+				table.insert(achievementStrings, string.format(
+					"Completed the \"%s\" Achievement!\n",
+					achievement["title"]
+				))
+
+				for reward in ivalues(achievement["rewards"]) do
+					local tier = reward["tier"]
+					if tier ~= "Default" then
+						table.insert(achievementStrings, string.format(
+							"%s Tier\n",
+							tier
+						))
+					end
+
+					for requirement in ivalues(reward["requirements"]) do
+						table.insert(achievementStrings, string.format(
+							"- %s\n",
+							requirement
+						))
+					end
+
+					if reward["titleUnlocked"] then
+						table.insert(achievementStrings, string.format(
+							"    Unlocked the \"%s\" Title!\n",
+							reward["titleUnlocked"]
+						))
+					end
+					table.insert(achievementStrings, "\n")
+				end
+
+				table.insert(achievements, table.concat(achievementStrings, "\n"))
+			end
+		end
 	end
 
 	table.insert(paneTexts, string.format(
@@ -544,6 +582,10 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 
 	for quest in ivalues(quests) do
 		table.insert(paneTexts, quest)
+	end
+
+	for achievement in ivalues(achievements) do
+		table.insert(paneTexts, achievement)
 	end
 
 	for text in ivalues(paneTexts) do
