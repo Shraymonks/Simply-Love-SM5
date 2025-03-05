@@ -54,6 +54,7 @@ local permitted_profile_settings = {
 	Pacemaker            = "boolean",
 	NPSGraphAtTop        = "boolean",
 	JudgmentTilt         = "boolean",
+	TiltMultiplier       = "number",
 	ColumnCues           = "boolean",
 	DisplayScorebox      = "boolean",
 

@@ -574,9 +574,36 @@ local Overrides = {
 			return vals
 		end
 	},
+	TiltMultiplier = {
+		Choices = function()
+			local first	= 1
+			local last 	= 3
+			local step 	= 0.5
+
+			return stringify(range(first, last, step), "%g")
+		end,
+		LoadSelections = function(self, list, pn)
+			local mods =SL[ToEnumShortString(pn)].ActiveModifiers
+			local tiltMultiplier = ("%g"):format(mods.TiltMultiplier)
+			local i = FindInTable(tiltMultiplier, self.Choices) or 1
+			list[i] = true
+			return list
+		end,
+		SaveSelections = function(self, list, pn)
+			local mods =SL[ToEnumShortString(pn)].ActiveModifiers
+
+			for i=1,#self.Choices do
+				if list[i] then
+					mods.TiltMultiplier = tonumber( self.Choices[i] )
+				end
+			end
+		end
+	},
+	-------------------------------------------------------------------------
 	ErrorBar = {
 		Values = { "None", "Colorful", "Monochrome", "Text" },
-	},-------------------------------------------------------------------------
+	},
+	-------------------------------------------------------------------------
 	ErrorBarTrim = {
 		Values = { "Off", "Great", "Excellent" },
 		Choices = function()
