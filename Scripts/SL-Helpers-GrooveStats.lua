@@ -759,13 +759,35 @@ DownloadEventUnlock = function(url, unlockName, packName)
 				if response.headers["Content-Type"] == "application/zip" then
 					-- Downloads are usually of the form:
 					--    /Downloads/<name>.zip/<song_folders/
-					if not FILEMAN:Unzip("/Downloads/"..downloadfile, "/Songs/"..packName.."/") then
+					local destinationPack = "/Songs/"..packName.."/"
+					if not FILEMAN:Unzip("/Downloads/"..downloadfile, destinationPack) then
 						downloadInfo.ErrorMessage = "Failed to Unzip!"
 					else
 						if SL.GrooveStats.UnlocksCache[url] == nil then
 							SL.GrooveStats.UnlocksCache[url] = {}
 						end
 						SL.GrooveStats.UnlocksCache[url][packName] = true
+
+						-- If Pack.ini doesn't exist (new unlock for this player), create it.
+						local group = string.lower(packName)
+						local year = 2025
+						if string.find(group, "itl online "..year.." unlocks") then
+							local packIniPath = destinationPack.."Pack.ini"
+							if not FILEMAN:DoesFileExist(packIniPath) then
+								IniFile.WriteFile(packIniPath, {
+									["Group"]={
+										["Version"]=1,
+										["DisplayTitle"]=packName,
+										["TranslitTitle"]=packName,
+										["SortTitle"]=packName,
+										["Series"]="ITL Online "..year,
+										["Year"]=year,
+										["Banner"]="",
+										["SyncOffset"]="ITG",
+									}
+								})
+							end
+						end
 
 						WriteUnlocksCache()
 					end
