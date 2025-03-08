@@ -375,27 +375,6 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 	local steps = GAMESTATE:GetCurrentSteps(player)
 	local chartName = steps:GetChartName()
 
-	local maxPoints = 0
-	local hash = SL[pn].Streams.Hash
-	if itlData["maxPoints"] ~= nil then
-		-- First try and fetch the maxPoints from the response.
-		maxPoints = itlData["maxPoints"]
-	elseif SL[pn].ITLData["hashMap"][hash] ~= nil then
-		-- Then if it doesn't exist, try and parse it from ITL hashMap
-		maxPoints = SL[pn].ITLData["hashMap"][hash]["maxPoints"]
-	else
-		-- Then if it still doesn't exist, try and parse it from the chartName.
-
-		-- Note that playing OUTSIDE of the ITL pack will result in 0 points for all
-		-- upscores since it won't have the relevant points data.
-		local pointsStr = chartName:gsub(" pts", "")
-		maxPoints = tonumber(pointsStr)
-	end
-
-	if maxPoints == nil then
-		maxPoints = 0
-	end
-
 	local currentPoints = itlData["curTopScorePoints"]
 	local previousPoints = itlData["prevTopScorePoints"]
 	local pointDelta = currentPoints - previousPoints
