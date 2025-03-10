@@ -101,7 +101,7 @@ local BannerAndSong = function(x, y, zoom)
 					self:LoadFromSong( GAMESTATE:GetCurrentSong() )
 				end
 			end
-			self:setsize(418, 164)
+			self:setsize(418, 164):animate(false) 
 		end
 	}
 	af[#af+1] = LoadFont("Common Normal")..{
