@@ -379,6 +379,8 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 	local previousPoints = itlData["prevTopScorePoints"]
 	local pointDelta = currentPoints - previousPoints
 
+	local totalPasses = itlData["totalPasses"]
+
 	local currentRankingPointTotal = itlData["currentRankingPointTotal"]
 	local previousRankingPointTotal = itlData["previousRankingPointTotal"]
 	local rankingDelta = currentRankingPointTotal - previousRankingPointTotal
@@ -418,7 +420,8 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 				["currentExPointTotal"] = currentExPointTotal,
 				["totalExDelta"] = totalExDelta,
 				["currentPointTotal"] = currentPointTotal,
-				["totalDelta"] = totalDelta
+				["totalDelta"] = totalDelta,
+				["totalPasses"] = totalPasses,
 			},
 		})
 	end
@@ -549,6 +552,7 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 		"Song Points: %d (%+d)\n"..
 		"EX Points: %d (%+d)\n"..
 		"Total Points: %d (%+d)\n\n"..
+		"You've passed the chart %d times\n\n"..
 		"%s",
 		score, scoreDelta,
 		currentPoints, pointDelta,
@@ -556,6 +560,7 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 		currentSongPointTotal, totalSongDelta,
 		currentExPointTotal, totalExDelta,
 		currentPointTotal, totalDelta,
+		totalPasses,
 		#statImprovements == 0 and "" or table.concat(statImprovements, "\n").."\n\n"
 	))
 
