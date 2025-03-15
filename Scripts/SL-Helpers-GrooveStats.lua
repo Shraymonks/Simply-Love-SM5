@@ -598,7 +598,7 @@ end
 
 -- -----------------------------------------------------------------------
 
-ParseGroovestatsDate = function(date)
+ParseGrooveStatsDate = function(date)
 	if not date or #date == 0 then return "" end
 
 	-- Dates are formatted like:

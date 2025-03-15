@@ -100,7 +100,7 @@ local PlayerDefaults = {
 			self.EvalPanePrimary   = 1 -- large score and judgment counts
 			self.EvalPaneSecondary = 5 -- offset histogram
 
-			-- The Groovestats API key loaded for this player
+			-- The GrooveStats API key loaded for this player
 			self.ApiKey = ""
 			self.GrooveStatsUsername = ""
 			-- Whether or not the player is playing on pad.
