@@ -49,7 +49,7 @@ local PlayerDefaults = {
 
 				TimingWindows = {true, true, true, true, true},
 				ShowFaPlusWindow = false,
-				ShowEXScore = false,
+				ShowExScore = false,
 				ShowFaPlusPane = true,
 
 				NoteFieldOffsetX = 0,

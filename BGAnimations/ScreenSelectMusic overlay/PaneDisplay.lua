@@ -96,7 +96,7 @@ local GetScoresRequestProcessor = function(res, params)
 
 		-- First check to see if the leaderboard even exists.
 		if data and data[playerStr] then
-			local showExScore = SL["P"..i].ActiveModifiers.ShowEXScore and data[playerStr]["exLeaderboard"] ~= nil
+			local showExScore = SL["P"..i].ActiveModifiers.ShowExScore and data[playerStr]["exLeaderboard"] ~= nil
 			local leaderboardData = nil
 			if showExScore then
 				leaderboardData = data[playerStr]["exLeaderboard"]
@@ -202,13 +202,13 @@ local GetScoresRequestProcessor = function(res, params)
 		else
 			if data and data[playerStr] then
 				if foundLeaderboard then
-					if SL["P"..i].ActiveModifiers.ShowEXScore then
-						loadingText:settext(THEME:GetString("GrooveStats", "EXScore"))
+					if SL["P"..i].ActiveModifiers.ShowExScore then
+						loadingText:settext(THEME:GetString("GrooveStats", "ExScore"))
 					else
 						loadingText:settext(THEME:GetString("GrooveStats", "GrooveStats"))
 					end
 				else
-					if SL["P"..i].ActiveModifiers.ShowEXScore then
+					if SL["P"..i].ActiveModifiers.ShowExScore then
 						loadingText:settext(THEME:GetString("GrooveStats", "NoExData"))
 					else
 						loadingText:settext(THEME:GetString("GrooveStats", "NoData"))

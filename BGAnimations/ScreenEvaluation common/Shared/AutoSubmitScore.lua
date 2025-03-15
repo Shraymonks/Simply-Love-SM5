@@ -176,7 +176,7 @@ local AutoSubmitRequestProcessor = function(res, overlay)
 				-- It's better to just not display anything than display the wrong scores.
 				if SL["P"..side].Streams.Hash == data[playerStr]["chartHash"] then
 					local personalRank = nil
-					local showExScore = SL["P"..side].ActiveModifiers.ShowEXScore and data[playerStr]["exLeaderboard"]
+					local showExScore = SL["P"..side].ActiveModifiers.ShowExScore and data[playerStr]["exLeaderboard"]
 
 					local leaderboardData = nil
 					if showExScore then

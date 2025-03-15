@@ -186,7 +186,7 @@ local LeaderboardRequestProcessor = function(res, master)
 
 		if data[playerStr] then
 			master[pn].isRanked = data[playerStr]["isRanked"]
-			if SL["P"..i].ActiveModifiers.ShowEXScore then
+			if SL["P"..i].ActiveModifiers.ShowExScore then
 				-- If the player is using EX scoring, then we want to display the EX leaderboard first.
 				if data[playerStr]["exLeaderboard"] then
 					leaderboardList[#leaderboardList + 1] = {
