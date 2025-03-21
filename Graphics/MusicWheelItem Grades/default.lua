@@ -39,35 +39,39 @@ local function IsQuint(hsl)
 	return false
 end
 
-return Def.Sprite{
-	Texture=THEME:GetPathG("MusicWheelItem","Grades/grades 1x19.png"),
-	InitCommand=function(self) self:zoom( SL_WideScale(0.18, 0.3) ):animate(false) end,
+return Def.ActorFrame{
+	LoadActor("GetLamp.lua"),
 
-	-- "SetGrade" is broadcast by the engine in MusicWheelItem.cpp.
-	-- It will be passed a table with, at minimum, one parameter:
-	--     PlayerNumber (PlayerNumber enum as string)
-	--
-	-- and potentially three more if the current song/course and steps/trail have a non-null HighScoreList
-	--     Grade (GradeTier as number)
-	--     NumTimesPlayed (number)
-	--     HighScoreList (as of ITGmania 1.0.1 -- NOTE: can be removed in a future version)
-	SetGradeCommand=function(self, params)
-		if not params.Grade then
-			self:visible(false)
-			return
+	Def.Sprite{
+		Texture=THEME:GetPathG("MusicWheelItem","Grades/grades 1x19.png"),
+		InitCommand=function(self) self:zoom( SL_WideScale(0.18, 0.3) ):animate(false) end,
+
+		-- "SetGrade" is broadcast by the engine in MusicWheelItem.cpp.
+		-- It will be passed a table with, at minimum, one parameter:
+		--     PlayerNumber (PlayerNumber enum as string)
+		--
+		-- and potentially three more if the current song/course and steps/trail have a non-null HighScoreList
+		--     Grade (GradeTier as number)
+		--     NumTimesPlayed (number)
+		--     HighScoreList (as of ITGmania 1.0.1 -- NOTE: can be removed in a future version)
+		SetGradeCommand=function(self, params)
+			if not params.Grade then
+				self:visible(false)
+				return
+			end
+
+			local grade = params.Grade
+			if grade == "Grade_Tier01" and IsQuint(params.HighScoreList) then
+				grade = "Grade_Tier00"
+			end
+
+			local state = grades[grade]
+			if not state then
+				self:visible(false)
+				return
+			end
+
+			self:visible(true):setstate(state)
 		end
-
-		local grade = params.Grade
-		if IsQuint(params.HighScoreList) then
-			grade = "Grade_Tier00"
-		end
-
-		local state = grades[grade]
-		if not state then
-			self:visible(false)
-			return
-		end
-
-		self:visible(true):setstate(state)
-	end
+	},
 }
