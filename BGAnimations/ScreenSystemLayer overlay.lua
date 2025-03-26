@@ -519,6 +519,7 @@ t[#t+1] = Def.ActorFrame {
 	end,
 	SystemMessageMessageCommand=function(self, params)
 		if self.IsDisplaying then
+			self:finishtweening()
 			bmt:settext(bmt:GetText().."\n"..params.Message)
 		else
 			bmt:settext( params.Message )
