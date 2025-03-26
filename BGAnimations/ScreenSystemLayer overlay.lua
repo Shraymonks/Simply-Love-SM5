@@ -508,14 +508,28 @@ local bmt = nil
 
 -- SystemMessage ActorFrame
 t[#t+1] = Def.ActorFrame {
+	InitCommand=function(self)
+		self.IsDisplaying = false
+	end,
+	OnCommand=function(self)
+		self.IsDisplaying = true
+	end,
+	OffCommand=function(self)
+		self.IsDisplaying = false
+	end,
 	SystemMessageMessageCommand=function(self, params)
-		bmt:settext( params.Message )
+		if self.IsDisplaying then
+			bmt:settext(bmt:GetText().."\n"..params.Message)
+		else
+			bmt:settext( params.Message )
+		end
 
-		self:playcommand( "On" )
+		self:playcommand( "On", params )
 		if params.NoAnimate then
 			self:finishtweening()
 		end
-		self:playcommand( "Off", params )
+
+		self:sleep(type(params.Duration)=="number" and params.Duration or 3.33 + 0.25):queuecommand("Off")
 	end,
 	HideSystemMessageMessageCommand=function(self) self:finishtweening() end,
 
