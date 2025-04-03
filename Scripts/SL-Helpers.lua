@@ -1043,3 +1043,11 @@ GetPlayerAF = function(pn)
 
 	return playerAF
 end
+
+-- If the banner is missing, use the VisualStyle fallback banner according to selected color.
+GetFallbackBanner = function()
+    local path = "/" .. THEME:GetCurrentThemeDirectory() .. "Graphics/_FallbackBanners/" .. ThemePrefs.Get("VisualStyle")
+    local banner_directory = FILEMAN:DoesFileExist(path) and path or THEME:GetPathG("", "_FallbackBanners/Arrows")
+
+    return banner_directory .. "/banner" .. SL.Global.ActiveColorIndex .. " (doubleres).png"
+end
