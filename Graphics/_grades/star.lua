@@ -51,7 +51,7 @@ t[#t+1] = LoadActor("./assets/star.png")..{
 }
 
 if PREFSMAN:GetPreference("EasterEggs") then
-	t[#t+1] = LoadActor("./assets/affluent.png")..{
+	t[#t+1] = LoadActor("./assets/pengy.png")..{
 		OnCommand=function(self)
 			self:y(10)
 			self:zoom(1.2)
